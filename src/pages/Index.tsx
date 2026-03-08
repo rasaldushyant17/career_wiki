@@ -568,7 +568,7 @@ const Index = () => {
                 Follow project updates, code contributions, and portfolio work.
               </p>
               <a
-                href="https://github.com/dushyant-rasal"
+                href="https://github.com/rasaldushyant17/career_wiki"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-4 inline-flex items-center gap-1.5 rounded-md border border-primary/40 bg-primary/10 px-3 py-2 font-mono text-xs text-primary hover:bg-primary/20 transition-colors"
