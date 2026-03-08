@@ -594,13 +594,13 @@ const Index = () => {
             </p>
           </div>
           <a
-            href="https://github.com/rasaldushyant17/career-wiki"
+            href="https://github.com/rasaldushyant17/career_wiki"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-md border border-border/70 bg-white/60 px-3 py-2 font-mono text-xs text-foreground hover:border-primary/40 hover:text-primary transition-colors"
           >
             <Github className="h-3.5 w-3.5" />
-            github.com/rasaldushyant17/career-wiki
+            github.com/rasaldushyant17/career_wiki
           </a>
         </div>
       </footer>
