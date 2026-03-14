@@ -1,2 +1,0 @@
-// CollegeFinder feature removed.
-export {};
