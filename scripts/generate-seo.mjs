@@ -7,7 +7,7 @@ const publicDir = path.join(repoRoot, "public");
 const sitemapPath = path.join(publicDir, "sitemap.xml");
 const robotsPath = path.join(publicDir, "robots.txt");
 
-const BASE_URL = (process.env.SITE_URL || process.env.VITE_SITE_URL || "https://careerwiki-smoky.vercel.app").replace(/\/+$/, "");
+const BASE_URL = (process.env.SITE_URL || process.env.VITE_SITE_URL || "https://careerwiki-site.vercel.app").replace(/\/+$/, "");
 const today = new Date().toISOString().slice(0, 10);
 
 const readText = (p) => fs.readFileSync(p, "utf8");
@@ -63,4 +63,3 @@ fs.writeFileSync(robotsPath, robots, "utf8");
 
 console.log(`Wrote ${path.relative(repoRoot, sitemapPath)} with ${urls.length} URLs`);
 console.log(`Wrote ${path.relative(repoRoot, robotsPath)}`);
-

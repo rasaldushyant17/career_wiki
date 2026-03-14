@@ -2,7 +2,7 @@ export const SITE = {
   name: "Career Wiki",
   defaultTitle: "Career Wiki | Career Options After 10th & 12th",
   defaultDescription: "Explore career options after 10th and 12th with smart search, roadmaps, stream guides, detailed career pages, and FAQs for students & parents.",
-  baseUrl: import.meta.env.VITE_SITE_URL || "https://careerwiki-smoky.vercel.app",
+  baseUrl: import.meta.env.VITE_SITE_URL || "https://careerwiki-site.vercel.app",
   defaultImagePath: "/assets/icons/favicon.svg?v=3",
 } as const;
 
