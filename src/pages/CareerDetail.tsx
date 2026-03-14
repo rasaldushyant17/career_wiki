@@ -36,7 +36,7 @@
  *   rel="noopener noreferrer" = security best practice for external links.
  */
 
-import { useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,       // ← arrow icon
@@ -52,6 +52,7 @@ import {
 } from "lucide-react";
 import { careerFields } from "@/data/careers";
 import HUDPanel from "@/components/HUDPanel";
+import Seo from "@/components/Seo";
 
 /**
  * ExternalLinkIcon — A small ↗ icon shown next to external links
@@ -80,17 +81,18 @@ const CareerDetail = () => {
   if (!career) {
     return (
       <div className="min-h-screen bg-background hud-scanlines hud-grid-bg flex items-center justify-center">
+        <Seo title="Coming Soon" noindex canonicalPath={id ? `/career/${id}` : "/"} />
         <div className="text-center">
           <div className="font-display text-lg text-accent tracking-widest">COMING SOON</div>
           <p className="font-body text-sm text-muted-foreground mt-2">
             This career module is under development.
           </p>
-          <button
-            onClick={() => navigate("/")}
-            className="mt-4 font-mono text-xs text-primary hover:underline"
+          <Link
+            to="/"
+            className="mt-4 inline-block font-mono text-xs text-primary hover:underline"
           >
             ← RETURN TO DASHBOARD
-          </button>
+          </Link>
         </div>
       </div>
     );
@@ -99,6 +101,7 @@ const CareerDetail = () => {
   // ========== MAIN CAREER PAGE ==========
   return (
     <div className="min-h-screen bg-background hud-scanlines hud-grid-bg">
+      <Seo title={career.title} description={career.subtitle} canonicalPath={id ? `/career/${id}` : "/"} />
 
       {/* ==================== HEADER / NAVIGATION BAR ====================
           Same as a regular HTML <header> with a back button and breadcrumb.

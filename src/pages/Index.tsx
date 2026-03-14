@@ -19,15 +19,17 @@
  */
 
 import { motion } from "framer-motion";           // Animation library (like CSS animations but in JS)
-import { useLocation, useNavigate } from "react-router-dom";    // For changing pages (like window.location but smoother)
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";    // For changing pages (like window.location but smoother)
+import { FormEvent, Suspense, lazy, useEffect, useMemo, useState } from "react";
 import { Radio, ChevronRight, Search, X, Compass, Brain, Tags, LayoutGrid, Sparkles, Github, ExternalLink, UserRound } from "lucide-react"; // Icon library (SVG icons as components)
 import { dashboardSections } from "@/data/careers"; // Our career data (like a JSON file)
 import HUDPanel from "@/components/HUDPanel";       // Reusable panel component we built
 import CareerLogo from "@/components/CareerLogo";
-import CareerRecommendationQuiz from "@/components/CareerRecommendationQuiz";
-import CareerKeywordExplorer from "@/components/CareerKeywordExplorer";
-import AICareerRecommender from "@/components/AICareerRecommender";
+import Seo from "@/components/Seo";
+
+const CareerRecommendationQuiz = lazy(() => import("@/components/CareerRecommendationQuiz"));
+const CareerKeywordExplorer = lazy(() => import("@/components/CareerKeywordExplorer"));
+const AICareerRecommender = lazy(() => import("@/components/AICareerRecommender"));
 
 const Index = () => {
   // useNavigate = gives us a function to change pages
@@ -56,6 +58,8 @@ const Index = () => {
       navigate(`/career/${id}`);   // Go to Career Detail page
     }
   };
+
+  const getCardPath = (id: string, type: string) => (type === "faq" ? `/faq/${id}` : `/career/${id}`);
 
   const normalizedQuery = searchQuery.trim().toLowerCase();
 
@@ -169,6 +173,7 @@ const Index = () => {
   //   onclick   →  onClick
   return (
     <div className="min-h-screen bg-background hud-scanlines hud-grid-bg">
+      <Seo canonicalPath="/" />
       {/* ↑ min-h-screen = min-height: 100vh (full screen height)
             bg-background = background-color: var(--background)
             hud-scanlines = our custom CSS class (adds scanline overlay)
@@ -364,14 +369,14 @@ const Index = () => {
               quickResults.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
                   {quickResults.map((card) => (
-                    <button
+                    <Link
                       key={card.id}
-                      onClick={() => handleCardClick(card.id, card.type)}
+                      to={getCardPath(card.id, card.type)}
                       className="border border-secondary/30 bg-secondary/10 px-3 py-1.5 text-left"
                     >
                       <div className="font-body text-xs text-foreground">{card.title}</div>
                       <div className="font-mono text-[10px] text-secondary">{card.heading}</div>
-                    </button>
+                    </Link>
                   ))}
                 </div>
               ) : (
@@ -386,13 +391,13 @@ const Index = () => {
             {!normalizedQuery && (
               <div className="flex flex-wrap gap-2">
                 {quickSuggestions.map((item) => (
-                  <button
+                  <Link
                     key={item.id}
-                    onClick={() => handleCardClick(item.id, item.type)}
+                    to={getCardPath(item.id, item.type)}
                     className="border border-primary/20 bg-primary/5 px-2.5 py-1 text-[11px] text-primary hover:bg-primary/10"
                   >
                     {item.title}
-                  </button>
+                  </Link>
                 ))}
               </div>
             )}
@@ -407,7 +412,9 @@ const Index = () => {
           <p className="font-body text-xs text-muted-foreground">Pick a path and instantly open roadmap, eligibility, and official result pages.</p>
         </section>
 
-        <CareerKeywordExplorer pathCareerId={pathCareerId} />
+        <Suspense fallback={null}>
+          <CareerKeywordExplorer pathCareerId={pathCareerId} />
+        </Suspense>
 
         <section id="career-streams" className="space-y-2 scroll-mt-24">
           <div className="flex items-center gap-2">
@@ -470,42 +477,46 @@ const Index = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: sectionIdx * 0.1 + cardIdx * 0.05 }}
-                  onClick={() => handleCardClick(card.id, card.type)}
-                  className="group cursor-pointer border border-border bg-card/60 backdrop-blur-sm p-5 transition-all duration-300 hover:bg-card/90 hud-bracket hover:glow-cyan"
+                  className="h-full"
                 >
-                  {/* "group" class = lets child elements react to parent hover
-                      cursor-pointer = cursor: pointer (hand icon)
-                      transition-all duration-300 = smooth transitions over 300ms
-                      hover:bg-card/90 = darker background on hover
-                      hover:glow-cyan = cyan glow effect on hover */}
+                  <Link
+                    to={getCardPath(card.id, card.type)}
+                    className="group relative block h-full cursor-pointer border border-border bg-card/60 backdrop-blur-sm p-5 transition-all duration-300 hover:bg-card/90 hud-bracket hover:glow-cyan"
+                  >
+                    {/* "group" class = lets child elements react to parent hover
+                        cursor-pointer = cursor: pointer (hand icon)
+                        transition-all duration-300 = smooth transitions over 300ms
+                        hover:bg-card/90 = darker background on hover
+                        hover:glow-cyan = cyan glow effect on hover */}
 
-                  {/* Card Title */}
-                  <h3 className="font-display text-sm font-semibold text-foreground tracking-wide mb-2 group-hover:glow-text-cyan transition-all">
-                    {/* group-hover:glow-text-cyan = when PARENT (.group) is hovered,
-                        add cyan text glow to THIS element */}
-                    {card.title}
-                  </h3>
+                    {/* Card Title */}
+                    <h3 className="font-display text-sm font-semibold text-foreground tracking-wide mb-2 group-hover:glow-text-cyan transition-all">
+                      {/* group-hover:glow-text-cyan = when PARENT (.group) is hovered,
+                          add cyan text glow to THIS element */}
+                      {card.title}
+                    </h3>
 
-                  {/* Card Description */}
-                  <p className="font-body text-sm text-muted-foreground mb-4 leading-relaxed">
-                    {/* leading-relaxed = line-height: 1.625 (easier to read) */}
-                    {card.description}
-                  </p>
+                    {/* Card Description */}
+                    <p className="font-body text-sm text-muted-foreground mb-4 leading-relaxed">
+                      {/* leading-relaxed = line-height: 1.625 (easier to read) */}
+                      {card.description}
+                    </p>
 
-                  {/* Call-to-Action (CTA) */}
-                  <div className="flex items-center gap-1.5 font-mono text-[10px] tracking-widest text-primary group-hover:text-secondary transition-colors">
-                    <ChevronRight className="h-3 w-3" />
-                    <span>{card.buttonText.toUpperCase()}</span>
-                    {/* .toUpperCase() = JavaScript string method, makes text ALL CAPS */}
-                  </div>
+                    {/* Call-to-Action (CTA) */}
+                    <div className="flex items-center gap-1.5 font-mono text-[10px] tracking-widest text-primary group-hover:text-secondary transition-colors">
+                      <ChevronRight className="h-3 w-3" />
+                      <span>{card.buttonText.toUpperCase()}</span>
+                      {/* .toUpperCase() = JavaScript string method, makes text ALL CAPS */}
+                    </div>
 
-                  {/* Hover glow overlay — invisible by default, appears on hover */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none overflow-hidden">
-                    {/* opacity-0 = invisible
-                        group-hover:opacity-100 = visible when parent hovered
-                        pointer-events-none = clicks pass through */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent" />
-                  </div>
+                    {/* Hover glow overlay — invisible by default, appears on hover */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none overflow-hidden">
+                      {/* opacity-0 = invisible
+                          group-hover:opacity-100 = visible when parent hovered
+                          pointer-events-none = clicks pass through */}
+                      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent" />
+                    </div>
+                  </Link>
                 </motion.div>
               ))}
 
@@ -523,7 +534,9 @@ const Index = () => {
           </p>
         </section>
 
-        <AICareerRecommender />
+        <Suspense fallback={null}>
+          <AICareerRecommender />
+        </Suspense>
 
         <section id="quiz-zone" className="space-y-2 scroll-mt-24">
           <div className="flex items-center gap-2">
@@ -533,7 +546,9 @@ const Index = () => {
           <p className="font-body text-xs text-muted-foreground">Answer 10 quick questions to discover your top-fit streams.</p>
         </section>
 
-        <CareerRecommendationQuiz />
+        <Suspense fallback={null}>
+          <CareerRecommendationQuiz />
+        </Suspense>
 
         <section id="about-developer" className="space-y-2 scroll-mt-24">
           <div className="flex items-center gap-2">

@@ -28,12 +28,13 @@
  *   (when element is removed from DOM) is hard — AnimatePresence solves this.
  */
 
-import { useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ChevronDown, ChevronUp, HelpCircle, Bot } from "lucide-react";
 import { faqSections } from "@/data/careers";
 import HUDPanel from "@/components/HUDPanel";
+import Seo from "@/components/Seo";
 
 type GeminiResponse = {
   candidates?: Array<{
@@ -157,11 +158,12 @@ ${query}`;
   if (!section) {
     return (
       <div className="min-h-screen bg-background hud-scanlines hud-grid-bg flex items-center justify-center">
+        <Seo title="FAQ" noindex canonicalPath={id ? `/faq/${id}` : "/"} />
         <div className="text-center">
           <div className="font-display text-lg text-destructive tracking-widest">FAQ NOT FOUND</div>
-          <button onClick={() => navigate("/")} className="mt-4 font-mono text-xs text-primary hover:underline">
+          <Link to="/" className="mt-4 inline-block font-mono text-xs text-primary hover:underline">
             ← RETURN TO DASHBOARD
-          </button>
+          </Link>
         </div>
       </div>
     );
@@ -170,6 +172,7 @@ ${query}`;
   // ---------- MAIN FAQ PAGE ----------
   return (
     <div className="min-h-screen bg-background hud-scanlines hud-grid-bg">
+      <Seo title={section.title} description={section.subtitle} canonicalPath={id ? `/faq/${id}` : "/"} />
 
       {/* ==================== HEADER (Navigation Bar) ==================== */}
       <header className="border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-0 z-50">

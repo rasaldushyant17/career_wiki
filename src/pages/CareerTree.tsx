@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   ArrowLeft,
   ChevronDown,
@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import HUDPanel from "@/components/HUDPanel";
 import { careerTree, CareerTreeNode } from "@/data/careerTree";
+import Seo from "@/components/Seo";
 
 const flattenIds = (node: CareerTreeNode): string[] => [
   node.id,
@@ -111,7 +112,6 @@ const buildStageSearchLinks = (node: CareerTreeNode) => {
 };
 
 const CareerTree = () => {
-  const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [selectedNodeId, setSelectedNodeId] = useState("start");
   const [expanded, setExpanded] = useState<Record<string, boolean>>(() =>
@@ -242,18 +242,18 @@ const CareerTree = () => {
             ) : null}
             {node.careerId ? (
               <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={() => navigate(`/career/${node.careerId}`)}
-                  className="rounded-md border border-primary/40 bg-primary/10 px-3 py-2 font-mono text-xs text-primary"
+                <Link
+                  to={`/career/${node.careerId}`}
+                  className="inline-flex items-center justify-center rounded-md border border-primary/40 bg-primary/10 px-3 py-2 font-mono text-xs text-primary"
                 >
                   Open Internal Guide
-                </button>
-                <button
-                  onClick={() => navigate(`/?path=${node.careerId}#keyword-explorer`)}
-                  className="rounded-md border border-secondary/40 bg-secondary/10 px-3 py-2 font-mono text-xs text-secondary"
+                </Link>
+                <Link
+                  to={`/?path=${node.careerId}#keyword-explorer`}
+                  className="inline-flex items-center justify-center rounded-md border border-secondary/40 bg-secondary/10 px-3 py-2 font-mono text-xs text-secondary"
                 >
                   Open Pathfinder Professions
-                </button>
+                </Link>
               </div>
             ) : null}
           </div>
@@ -270,16 +270,18 @@ const CareerTree = () => {
 
   return (
     <div className="min-h-screen bg-background hud-scanlines hud-grid-bg">
+      <Seo title="Career Tree" canonicalPath="/career-tree" />
+      <h1 className="sr-only">Career Tree</h1>
       <header className="border-b border-border/50 bg-background/90 backdrop-blur-md sticky top-0 z-50">
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate("/")}
+            <Link
+              to="/"
               className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground hover:text-primary transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
               <span>BACK</span>
-            </button>
+            </Link>
             <div className="h-4 w-px bg-border" />
             <span className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase">
               Career / Tree View
@@ -387,12 +389,12 @@ const CareerTree = () => {
                 </div>
 
                 {selectedNode.careerId ? (
-                  <button
-                    onClick={() => navigate(`/?path=${selectedNode.careerId}#keyword-explorer`)}
-                    className="w-full rounded-md border border-secondary/40 bg-secondary/10 px-3 py-2 text-xs font-mono text-secondary"
+                  <Link
+                    to={`/?path=${selectedNode.careerId}#keyword-explorer`}
+                    className="inline-flex w-full items-center justify-center rounded-md border border-secondary/40 bg-secondary/10 px-3 py-2 text-xs font-mono text-secondary"
                   >
                     Open Pathfinder For This Stage
-                  </button>
+                  </Link>
                 ) : null}
 
                 <div className="space-y-2">
