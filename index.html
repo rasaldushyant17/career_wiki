@@ -116,10 +116,10 @@
         position: absolute;
         inset: 0;
         width: 100%;
-        height: 100vh;
-        object-fit: cover;
+        height: 100%;
+        object-fit: contain;
         object-position: center center;
-        filter: brightness(1.08) contrast(1.06) saturate(1.04);
+        filter: brightness(1.08) contrast(1.04) saturate(1.02);
         backface-visibility: hidden;
         transform: translateZ(0) scale(1);
         will-change: transform;
@@ -135,9 +135,7 @@
         position: absolute;
         inset: 0;
         background:
-          linear-gradient(180deg, rgba(2, 4, 10, 0.02) 0%, rgba(2, 4, 10, 0.08) 46%, rgba(2, 4, 10, 0.46) 100%),
-          radial-gradient(circle at 50% 22%, rgba(90, 200, 250, 0.08), transparent 34%),
-          radial-gradient(circle at 82% 28%, rgba(124, 58, 237, 0.05), transparent 28%);
+          linear-gradient(180deg, rgba(2, 4, 10, 0.02) 0%, rgba(2, 4, 10, 0.05) 50%, rgba(2, 4, 10, 0.18) 100%);
         pointer-events: none;
       }
 
@@ -166,23 +164,36 @@
         opacity: 0.7;
       }
 
+      .intro-layout {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: minmax(0, 1fr) auto;
+      }
+
+      .intro-media-stage {
+        position: relative;
+        min-height: 0;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at top, rgba(90, 200, 250, 0.06), transparent 42%),
+          #02040a;
+      }
+
       .intro-ui {
         position: relative;
         z-index: 2;
-        width: min(100%, 960px);
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        align-items: center;
-        padding: max(1rem, env(safe-area-inset-top)) 1.5rem calc(max(1.25rem, env(safe-area-inset-bottom)) + 0.75rem);
+        width: min(100%, 920px);
+        margin: 0 auto;
+        padding: 1rem 1.25rem calc(max(1rem, env(safe-area-inset-bottom)) + 0.75rem);
         box-sizing: border-box;
       }
 
       .intro-copy {
-        width: min(100%, 760px);
-        margin: 0 0 1rem;
-        padding-top: 0;
+        width: 100%;
+        margin: 0;
         text-align: center;
         transform: translateY(0);
         transition: transform var(--intro-transition), opacity var(--intro-transition);
@@ -231,10 +242,7 @@
       }
 
       .intro-bottom-stack {
-        width: min(100%, 760px);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        width: 100%;
         transform: translateY(0);
         transition: transform var(--intro-transition), opacity var(--intro-transition);
       }
@@ -374,13 +382,13 @@
       }
 
       .intro-bottom-card {
-        width: min(100%, 760px);
+        width: 100%;
         position: relative;
-        padding: 1.15rem 1.15rem 1.05rem;
+        padding: 1.2rem 1.2rem 1.1rem;
         border: 1px solid rgba(150, 170, 255, 0.22);
         border-radius: 30px;
         background:
-          linear-gradient(180deg, rgba(16, 22, 42, 0.56), rgba(8, 12, 24, 0.82)),
+          linear-gradient(180deg, rgba(14, 18, 34, 0.9), rgba(7, 10, 20, 0.96)),
           radial-gradient(circle at top, rgba(90, 200, 250, 0.08), transparent 48%);
         box-shadow:
           0 22px 48px rgba(0, 0, 0, 0.28),
@@ -503,7 +511,7 @@
         margin: 0.5rem 0 0;
         color: rgba(226, 235, 255, 0.76);
         font: 500 0.95rem/1.55 "Space Grotesk", sans-serif;
-        max-width: 28rem;
+        max-width: 32rem;
       }
 
       .intro-bottom-meta {
@@ -560,39 +568,54 @@
       }
 
       @media (max-width: 720px) {
+        .intro-layout {
+          grid-template-rows: auto minmax(0, 1fr);
+        }
+
+        .intro-media-stage {
+          aspect-ratio: 1 / 1;
+          min-height: 0;
+        }
+
+        .intro-video {
+          object-fit: contain;
+        }
+
         .intro-ui {
-          padding: 1.2rem 1rem max(1rem, env(safe-area-inset-bottom));
+          width: 100%;
+          padding: 0.85rem 0.9rem max(1rem, env(safe-area-inset-bottom));
+          background: linear-gradient(180deg, rgba(5, 8, 18, 0.96), rgba(3, 6, 14, 1));
         }
 
         .intro-copy {
           width: 100%;
-          margin-bottom: 0.85rem;
+          margin-bottom: 0.9rem;
         }
 
         .intro-title {
-          font-size: clamp(1.65rem, 8vw, 2.8rem);
+          font-size: clamp(1.45rem, 7vw, 2.2rem);
         }
 
         .intro-type {
-          min-height: 1.45rem;
-          font-size: 0.88rem;
+          min-height: 1.3rem;
+          font-size: 0.82rem;
           letter-spacing: 0.03em;
         }
 
         .ai-orb-button {
-          width: 108px;
-          height: 108px;
-          font-size: 0.82rem;
+          width: 104px;
+          height: 104px;
+          font-size: 0.78rem;
         }
 
         .intro-bottom-card {
           width: 100%;
           border-radius: 22px;
-          padding: 0.95rem 0.9rem 0.95rem;
+          padding: 1rem 0.9rem 0.95rem;
         }
 
         .intro-bottom-title {
-          font-size: 1.02rem;
+          font-size: 0.98rem;
         }
 
         .intro-bottom-label {
@@ -612,7 +635,7 @@
         }
 
         .intro-bottom-subtitle {
-          font-size: 0.86rem;
+          font-size: 0.82rem;
           max-width: 100%;
         }
 
@@ -731,48 +754,52 @@
 
   <body>
     <div class="intro-screen" id="introScreen" aria-hidden="true">
-      <video
-        class="intro-video"
-        id="introVideo"
-        autoplay
-        muted
-        playsinline
-        preload="auto"
-      >
-        <source src="/assets/video/careerwiki-entry.mp4" type="video/mp4" />
-      </video>
-      <div class="intro-overlay"></div>
-      <div class="intro-blackout"></div>
+      <div class="intro-layout">
+        <div class="intro-media-stage">
+          <video
+            class="intro-video"
+            id="introVideo"
+            autoplay
+            muted
+            playsinline
+            preload="auto"
+          >
+            <source src="/assets/video/careerwiki-entry.mp4" type="video/mp4" />
+          </video>
+          <div class="intro-overlay"></div>
+          <div class="intro-blackout"></div>
+        </div>
 
-      <div class="intro-ui">
-        <div class="intro-bottom-stack">
-          <div class="intro-copy">
-            <p class="intro-kicker">CareerWiki System</p>
-            <h1 class="intro-title">Your future begins with clarity.</h1>
-            <p class="intro-type" id="introTypeLine" aria-live="polite"></p>
-          </div>
+        <div class="intro-ui">
+          <div class="intro-bottom-stack">
+            <div class="intro-copy">
+              <p class="intro-kicker">CareerWiki System</p>
+              <h1 class="intro-title">Your future begins with clarity.</h1>
+              <p class="intro-type" id="introTypeLine" aria-live="polite"></p>
+            </div>
 
-          <div class="intro-bottom-card">
-            <div class="intro-bottom-card-trace"></div>
-            <div class="intro-bottom-inner">
-              <div class="intro-bottom-content">
-                <div class="intro-bottom-copy">
-                  <div class="intro-bottom-badge">AI Entry Portal</div>
-                  <p class="intro-bottom-label">Personalized Guidance</p>
-                  <p class="intro-bottom-title">Step into your career cockpit</p>
-                  <p class="intro-bottom-subtitle">Open a cleaner, smarter way to explore careers, streams, and AI-guided next steps.</p>
-                  <div class="intro-bottom-meta">
-                    <span class="intro-bottom-chip">Smart Search</span>
-                    <span class="intro-bottom-chip">AI Match</span>
-                    <span class="intro-bottom-chip">Roadmaps</span>
+            <div class="intro-bottom-card">
+              <div class="intro-bottom-card-trace"></div>
+              <div class="intro-bottom-inner">
+                <div class="intro-bottom-content">
+                  <div class="intro-bottom-copy">
+                    <div class="intro-bottom-badge">AI Entry Portal</div>
+                    <p class="intro-bottom-label">Personalized Guidance</p>
+                    <p class="intro-bottom-title">Step into your career cockpit</p>
+                    <p class="intro-bottom-subtitle">Open a cleaner, smarter way to explore careers, streams, and AI-guided next steps.</p>
+                    <div class="intro-bottom-meta">
+                      <span class="intro-bottom-chip">Smart Search</span>
+                      <span class="intro-bottom-chip">AI Match</span>
+                      <span class="intro-bottom-chip">Roadmaps</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="intro-bottom-action">
-                <button class="ai-orb-button" data-enter-intro type="button" aria-label="Enter dashboard">
-                  <span>Enter -></span>
-                </button>
-                <span class="intro-orb-label">Tap To Begin</span>
+                <div class="intro-bottom-action">
+                  <button class="ai-orb-button" data-enter-intro type="button" aria-label="Enter dashboard">
+                    <span>Enter -></span>
+                  </button>
+                  <span class="intro-orb-label">Tap To Begin</span>
+                </div>
               </div>
             </div>
           </div>
