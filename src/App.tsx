@@ -13,6 +13,7 @@ const App = () => (
     <Suspense fallback={null}>
       <Routes>
         <Route path="/" element={<Index />} />
+        <Route path="/dashboard" element={<Index />} />
         <Route path="/career/:id" element={<CareerDetail />} />
         <Route path="/career-tree" element={<CareerTree />} />
         <Route path="/faq/:id" element={<FAQPage />} />
