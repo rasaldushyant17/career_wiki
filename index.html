@@ -293,7 +293,11 @@
       body.intro-held .intro-title,
       body.intro-held .intro-type,
       body.intro-held .intro-bottom-title,
-      body.intro-held .intro-bottom-subtitle {
+      body.intro-held .intro-bottom-subtitle,
+      body.intro-held .intro-bottom-label,
+      body.intro-held .intro-bottom-badge,
+      body.intro-held .intro-bottom-chip,
+      body.intro-held .intro-orb-label {
         text-shadow: 0 4px 16px rgba(0, 0, 0, 0.94), 0 0 20px rgba(255, 255, 255, 0.12);
       }
 
@@ -889,6 +893,10 @@
           background: var(--intro-mobile-panel-bg);
         }
 
+        body.intro-held .intro-ui {
+          background: linear-gradient(180deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.92));
+        }
+
         .intro-bottom-stack {
           width: min(95vw, 32rem);
           max-height: min(88dvh, 31rem);
@@ -903,10 +911,18 @@
           font-size: clamp(1.2rem, 6.4vw, 2rem);
         }
 
+        body.intro-held .intro-title {
+          font-size: clamp(1.3rem, 6.6vw, 2.08rem);
+        }
+
         .intro-type {
           min-height: 1.1rem;
           font-size: clamp(0.72rem, 3.2vw, 0.82rem);
           letter-spacing: 0.03em;
+        }
+
+        body.intro-held .intro-type {
+          font-size: clamp(0.76rem, 3.4vw, 0.88rem);
         }
 
         .intro-bottom-card {
@@ -917,6 +933,10 @@
 
         .intro-bottom-title {
           font-size: clamp(0.88rem, 4vw, 0.98rem);
+        }
+
+        body.intro-held .intro-bottom-title {
+          font-size: clamp(0.94rem, 4.2vw, 1.05rem);
         }
 
         .intro-bottom-label {
@@ -947,9 +967,22 @@
           -webkit-line-clamp: 2;
         }
 
+        body.intro-held .intro-bottom-subtitle {
+          font-size: clamp(0.74rem, 3.1vw, 0.84rem);
+        }
+
         .intro-bottom-meta {
           justify-content: center;
           margin-top: 0.55rem;
+        }
+      }
+
+      @media (max-width: 360px) {
+        body.intro-held .intro-bottom-subtitle {
+          font-size: clamp(0.78rem, 3.85vw, 0.88rem);
+          line-height: 1.52;
+          letter-spacing: 0.01em;
+          -webkit-line-clamp: 2;
         }
       }
 
