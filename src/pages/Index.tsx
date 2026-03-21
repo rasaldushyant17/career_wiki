@@ -22,7 +22,7 @@ import { motion } from "framer-motion";           // Animation library (like CSS
 import { Link, useLocation, useNavigate } from "react-router-dom";    // For changing pages (like window.location but smoother)
 import { FormEvent, Suspense, lazy, useEffect, useMemo, useState } from "react";
 import { Radio, ChevronRight, Search, X, Compass, Brain, Tags, LayoutGrid, Sparkles, Github, ExternalLink, UserRound } from "lucide-react"; // Icon library (SVG icons as components)
-import { dashboardSections } from "@/data/careers"; // Our career data (like a JSON file)
+import { dashboardSections } from "@/data/dashboardSections"; // Dashboard card data
 import HUDPanel from "@/components/HUDPanel";       // Reusable panel component we built
 import CareerLogo from "@/components/CareerLogo";
 import Seo from "@/components/Seo";
@@ -39,6 +39,7 @@ const Index = () => {
   const location = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeNavSection, setActiveNavSection] = useState("smart-search");
+  const [shouldLoadPathfinder, setShouldLoadPathfinder] = useState(false);
   const pathCareerId = new URLSearchParams(location.search).get("path");
 
   /**
@@ -159,12 +160,36 @@ const Index = () => {
 
   useEffect(() => {
     if (!pathCareerId) return;
+    setShouldLoadPathfinder(true);
     document.getElementById("keyword-explorer")?.scrollIntoView({
       behavior: "smooth",
       block: "start",
     });
     setActiveNavSection("keyword-explorer");
   }, [pathCareerId]);
+
+  useEffect(() => {
+    if (shouldLoadPathfinder) return;
+
+    const trigger = document.getElementById("keyword-explorer");
+    if (!trigger || !("IntersectionObserver" in window)) {
+      setShouldLoadPathfinder(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setShouldLoadPathfinder(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "300px 0px" },
+    );
+
+    observer.observe(trigger);
+    return () => observer.disconnect();
+  }, [shouldLoadPathfinder]);
 
   // Everything inside return() is JSX — it looks like HTML!
   // KEY DIFFERENCES FROM HTML:
@@ -412,9 +437,19 @@ const Index = () => {
           <p className="font-body text-xs text-muted-foreground">Pick a path and instantly open roadmap, eligibility, and official result pages.</p>
         </section>
 
-        <Suspense fallback={null}>
-          <CareerKeywordExplorer pathCareerId={pathCareerId} />
-        </Suspense>
+        {shouldLoadPathfinder ? (
+          <Suspense fallback={null}>
+            <CareerKeywordExplorer pathCareerId={pathCareerId} />
+          </Suspense>
+        ) : (
+          <HUDPanel title="CAREER PATHFINDER HUB" delay={0.12}>
+            <div className="p-4">
+              <p className="font-body text-sm text-muted-foreground">
+                Pathfinder tools will load automatically when this section is in view.
+              </p>
+            </div>
+          </HUDPanel>
+        )}
 
         <section id="career-streams" className="space-y-2 scroll-mt-24">
           <div className="flex items-center gap-2">

@@ -27,7 +27,7 @@ const extractIdsBetween = (text, startMarker, endMarker) => {
 };
 
 const careersText = readText(careersPath);
-const careerIds = extractIdsBetween(careersText, "export const careerFields", "export const dashboardSections");
+const careerIds = extractIdsBetween(careersText, "export const careerFields", "export const faqSections");
 const faqIds = extractIdsBetween(careersText, "export const faqSections", null);
 
 const urls = [

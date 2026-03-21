@@ -46,7 +46,6 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Sora:wght@500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="preload" href="/assets/video/student-decision-making-system.mp4" as="video" type="video/mp4" />
 
     <style>
       :root {
@@ -1154,11 +1153,11 @@
             autoplay
             muted
             playsinline
-            preload="auto"
+            preload="none"
             poster="/assets/video/careerwiki-entry-poster.svg"
           >
-            <source src="/assets/video/student-decision-making-system.mp4" type="video/mp4" />
-            <source src="/assets/video/careerwiki-entry.mp4" type="video/mp4" />
+            <source data-src="/assets/video/student-decision-making-system.mp4" type="video/mp4" />
+            <source data-src="/assets/video/careerwiki-entry.mp4" type="video/mp4" />
           </video>
           <div class="intro-overlay"></div>
           <div class="intro-blackout"></div>
@@ -1376,6 +1375,15 @@
         };
 
         if (introVideo) {
+          const videoSources = introVideo.querySelectorAll("source[data-src]");
+          videoSources.forEach((source) => {
+            const src = source.getAttribute("data-src");
+            if (src) {
+              source.setAttribute("src", src);
+            }
+          });
+          introVideo.load();
+
           introVideo.defaultPlaybackRate = introPlaybackRate;
           introVideo.playbackRate = introPlaybackRate;
 

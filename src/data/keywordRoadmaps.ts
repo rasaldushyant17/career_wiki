@@ -1,4 +1,5 @@
-import { careerFields, dashboardSections } from "@/data/careers";
+import { careerFields } from "@/data/careers";
+import { dashboardSections } from "@/data/dashboardSections";
 
 export interface KeywordResourceLinks {
   roadmap?: string;
