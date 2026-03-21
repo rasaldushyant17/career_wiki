@@ -107,6 +107,16 @@
         --intro-stagger-action: 360ms;
       }
 
+      body.intro-video-cover {
+        --intro-video-fit: cover;
+        --intro-video-position: center center;
+      }
+
+      body.intro-video-contain {
+        --intro-video-fit: contain;
+        --intro-video-position: center center;
+      }
+
       .intro-screen[data-theme="premium-dark-glass"] {
         --intro-text: #fbf6e8;
         --intro-muted: rgba(243, 233, 206, 0.88);
@@ -904,7 +914,7 @@
       @media (max-width: 920px), (max-height: 760px), (max-aspect-ratio: 3/4) {
         :root {
           --intro-video-fit: contain;
-          --intro-video-position: center top;
+          --intro-video-position: center center;
         }
 
         .intro-media-stage {
@@ -1167,11 +1177,15 @@
         const applyViewportFit = () => {
           const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
           const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+          const viewportRatio = viewportHeight > 0 ? viewportWidth / viewportHeight : 1;
           const useCompact = viewportWidth <= 1080 || viewportHeight <= 760;
           const useTight = viewportWidth <= 430 || viewportHeight <= 620;
+          const useContainVideo = viewportWidth <= 920 || viewportHeight <= 760 || viewportRatio < 1.2;
 
           body.classList.toggle("intro-compact", useCompact);
           body.classList.toggle("intro-tight", useTight);
+          body.classList.toggle("intro-video-contain", useContainVideo);
+          body.classList.toggle("intro-video-cover", !useContainVideo);
         };
 
         const handleViewportChange = () => {
